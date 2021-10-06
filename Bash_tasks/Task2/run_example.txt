@@ -1,0 +1,1 @@
+./task2.sh --input "dataset.csv" --train_ratio 70 --y_column "Nsd"

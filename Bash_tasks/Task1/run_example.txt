@@ -1,0 +1,1 @@
+./task1.sh workers_cnt=8 links_column_name=link path_to_save=save_path
