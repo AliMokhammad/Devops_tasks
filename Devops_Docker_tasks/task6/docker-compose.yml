@@ -11,11 +11,14 @@ services:
     ports:
       - 3306:3306
     restart: always
+    healthcheck:
+      interval: 5s
+      timeout: 1s
+      retries: 30
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-padmin']
     volumes:
       - ./mysql-data:/var/lib/mysql
       - ./scripts/CREATE.sql:/docker-entrypoint-initdb.d/initdb.sql
-#    volumes:
-#      - ./scripts/CREATE.sql:/docker-entrypoint-initdb.d/initdb.sql
 
   web-app:
     build: ./DostavimVse
@@ -24,9 +27,9 @@ services:
     networks:
       - web-db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: always
-    entrypoint: ["./wait-for-it.sh", "db:3306", "-t", "120", "--", "java", "-jar", "target/dostavimvse-0.0.1-SNAPSHOT.jar"]
 
 networks:
   web-db:

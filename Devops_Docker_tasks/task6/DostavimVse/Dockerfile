@@ -5,8 +5,10 @@ COPY . /usr/src/app
 
 COPY wait-for-it.sh wait-for-it.sh
 
-RUN mvn package -P init-base
-RUN mvn package -P web-app
+CMD mvn package -P init-base && \
+    java -jar ./target/dostavimvse-0.0.1-SNAPSHOT.jar && \
+    mvn package -P web-app clean package && \
+    java -jar ./target/dostavimvse-0.0.1-SNAPSHOT.jar
 
 EXPOSE 8080
 
